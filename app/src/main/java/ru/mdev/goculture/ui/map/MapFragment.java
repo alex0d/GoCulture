@@ -73,6 +73,7 @@ public class MapFragment extends Fragment {
         map.setMultiTouchControls(true);
         map.setMinZoomLevel(4.5);
         map.setMaxZoomLevel(21.0);
+        map.setScrollableAreaLimitLatitude(85, -85, 0);
 
         MyLocationNewOverlay mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(context), map);
         mLocationOverlay.enableMyLocation();
