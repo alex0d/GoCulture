@@ -12,17 +12,21 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import org.osmdroid.LocationListenerProxy;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
@@ -45,8 +49,12 @@ public class MapFragment extends Fragment {
 
     //private MapViewModel mViewModel;
     private MapView map;
-    IMapController mapController;
-    Context context;
+    private IMapController mapController;
+    private Context context;
+    private LocationListenerProxy locationListener;
+    private LocationManager locationManager;
+    private MyLocationNewOverlay locationOverlay;
+
 
     public static MapFragment newInstance() {
         return new MapFragment();
@@ -80,26 +88,29 @@ public class MapFragment extends Fragment {
         map.getOverlays().add(mLocationOverlay);
 
         mapController = map.getController();
-        mapController.setZoom(17.0);
+        mapController.setZoom(15.0);
 
-        GeoPoint startPoint = new GeoPoint(55.6700, 37.4801);
+        GeoPoint startPoint = new GeoPoint(55.756, 37.618);
         mapController.setCenter(startPoint);
-        LocationManager locationManager = (LocationManager) inflater.getContext().getSystemService(Context.LOCATION_SERVICE);
 
-        //for demo, getLastKnownLocation from GPS only, not from NETWORK
-        @SuppressLint("MissingPermission") Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if(lastLocation != null){
-            updateLoc(lastLocation);
-        }
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        locationOverlay = new MyLocationNewOverlay(map);
+        locationListener = new LocationListenerProxy(locationManager);
 
         return view;
     }
 
-private void updateLoc(Location loc){
-    GeoPoint locGeoPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
-    mapController.setCenter(locGeoPoint);
-    map.invalidate();
-}
+    @Override
+    public void onResume() {
+        super.onResume();
+        locationOverlay.enableMyLocation();
+        locationListener.startListening(new GeoUpdateHandler(this), 1000, 3);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 
     @Override
     public void onDestroyView() {
@@ -110,6 +121,9 @@ private void updateLoc(Location loc){
     @Override
     public void onPause() {
         super.onPause();
+        locationListener.stopListening();
+        locationOverlay.disableMyLocation();
+
         //this will refresh the osmdroid configuration on resuming.
         //if you make changes to the configuration, use
         //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
