@@ -5,12 +5,6 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_map">
 
-<!--    <fragment-->
-<!--        android:id="@+id/navigation_home"-->
-<!--        android:name="ru.mdev.goculture.ui.home.HomeFragment"-->
-<!--        android:label="@string/title_home"-->
-<!--        tools:layout="@layout/fragment_home" />-->
-
     <fragment
         android:id="@+id/navigation_map"
         android:name="ru.mdev.goculture.ui.map.MapFragment"
@@ -18,14 +12,21 @@
         tools:layout="@layout/fragment_map" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="ru.mdev.goculture.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_rating"
+        android:name="ru.mdev.goculture.ui.rating.RatingFragment"
+        android:label="@string/title_rating"
+        tools:layout="@layout/fragment_rating" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="ru.mdev.goculture.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_friends"
+        android:name="ru.mdev.goculture.ui.friends.FriendsFragment"
+        android:label="@string/title_friends"
+        tools:layout="@layout/fragment_friends" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="ru.mdev.goculture.ui.profile.ProfileFragment"
+        android:label="@string/title_friends"
+        tools:layout="@layout/fragment_profile" />
+
 </navigation>

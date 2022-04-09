@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GoCulture</string>
+    <string name="title_map">Карта</string>
+    <string name="title_rating">Рейтинг</string>
+    <string name="title_friends">Друзья</string>
+    <string name="title_profile">Мой профиль</string>
+</resources>

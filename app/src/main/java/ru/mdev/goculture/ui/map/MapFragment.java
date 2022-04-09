@@ -47,7 +47,6 @@ import ru.mdev.goculture.R;
 
 public class MapFragment extends Fragment {
 
-    //private MapViewModel mViewModel;
     private MapView map;
     private IMapController mapController;
     private Context context;
