@@ -66,8 +66,8 @@ public class MapFragment extends Fragment {
     private MyLocationNewOverlay locationOverlay;
 
     public static final String BASE_URL = "https://mdev-goculture.herokuapp.com";
-    private SightAPI api;
-    private ArrayList<Sight> arrayList = new ArrayList<>();
+    private SightAPI sightAPI;
+    private ArrayList<Sight> sights = new ArrayList<>();
 
     public static MapFragment newInstance() {
         return new MapFragment();
@@ -82,14 +82,14 @@ public class MapFragment extends Fragment {
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-        api = retrofit.create(SightAPI.class);
+        sightAPI = retrofit.create(SightAPI.class);
 
-        api.getSight().enqueue(new Callback<ArrayList<Sight>>() {
+        sightAPI.getSight().enqueue(new Callback<ArrayList<Sight>>() {
             @Override
             public void onResponse(Call<ArrayList<Sight>> call, Response<ArrayList<Sight>> response) {
                 if (response.code() == 200) {
-                    arrayList.addAll(response.body());
-                    setupSightsMarkers(arrayList);
+                    sights.addAll(response.body());
+                    setupSightsMarkers();
                 }
             }
 
@@ -145,7 +145,7 @@ public class MapFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setupSightsMarkers(arrayList);
+        setupSightsMarkers();
         locationOverlay.enableMyLocation();
         locationListener.startListening(new GeoUpdateHandler(this), 1000, 3);
     }
@@ -174,7 +174,7 @@ public class MapFragment extends Fragment {
         map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
     }
 
-    private void setupSightsMarkers(ArrayList<Sight> sights) {
+    private void setupSightsMarkers() {
         for (Sight sight : sights) {
             Marker marker = new Marker(map);
 //            marker.setIcon(getResources().getDrawable(R.drawable.ic_location_pin));
