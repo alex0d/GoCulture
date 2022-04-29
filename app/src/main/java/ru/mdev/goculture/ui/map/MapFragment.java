@@ -7,7 +7,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -69,6 +72,11 @@ public class MapFragment extends Fragment {
     private SightAPI sightAPI;
     private ArrayList<Sight> sights = new ArrayList<>();
 
+    private float POINT_RADIUS = 100;
+    private final int PROX_ALERT_EXPIRATION = -1;
+    private final String PROX_ALERT_INTENT = "ru.mdev.goculture.ui.map";
+    private final double distance = 0.0003;
+
     public static MapFragment newInstance() {
         return new MapFragment();
     }
@@ -116,7 +124,7 @@ public class MapFragment extends Fragment {
         map.setTileSource(TileSourceFactory.MAPNIK);
 
         map.setTilesScaledToDpi(false);
-        map.setTilesScaleFactor((float)1.5);
+        map.setTilesScaleFactor((float) 1.5);
 
         map.setMultiTouchControls(true);
         map.setMinZoomLevel(4.5);
@@ -148,6 +156,34 @@ public class MapFragment extends Fragment {
         setupSightsMarkers();
         locationOverlay.enableMyLocation();
         locationListener.startListening(new GeoUpdateHandler(this), 1000, 3);
+
+        Intent intent = new Intent(PROX_ALERT_INTENT);
+        PendingIntent proximityIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location location = locationManager.getLastKnownLocation(locationManager.getAllProviders().get(0));
+        for(Sight sight: sights){
+            if((Math.abs(sight.getLatitude() - location.getLatitude()) < distance) && (Math.abs(sight.getLongitude() - location.getLongitude()) < distance)){
+                Log.i("SIGHT", "work");
+                locationManager.addProximityAlert(sight.getLatitude(), // the latitude of the central point of the alert region
+                        sight.getLongitude(), // the longitude of the central point of the alert region
+                        POINT_RADIUS, // the radius of the central point of the alert region, in meters
+                        PROX_ALERT_EXPIRATION, // time for this proximity alert, in milliseconds, or -1 to indicate no expiration
+                        proximityIntent // will be used to generate an Intent to fire when entry to or exit from the alert region is detected
+                );
+            }
+        }
+        IntentFilter filter = new IntentFilter(PROX_ALERT_INTENT);
+        context.registerReceiver(new ProximityIntentReceiver(), filter);
     }
 
     @Override
