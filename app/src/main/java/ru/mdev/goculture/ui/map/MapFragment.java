@@ -158,7 +158,7 @@ public class MapFragment extends Fragment {
         locationListener.startListening(new GeoUpdateHandler(this), 1000, 3);
 
         Intent intent = new Intent(PROX_ALERT_INTENT);
-        PendingIntent proximityIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        PendingIntent proximityIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
