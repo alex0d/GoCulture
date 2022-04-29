@@ -219,6 +219,7 @@ public class MapFragment extends Fragment {
             GeoPoint point = new GeoPoint(sight.getLatitude(), sight.getLongitude());
             marker.setPosition(point);
         }
+        map.invalidate();
     }
 
 }
