@@ -6,31 +6,27 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import org.osmdroid.LocationListenerProxy;
 import org.osmdroid.api.IMapController;
@@ -50,13 +46,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import ru.mdev.goculture.R;
-import ru.mdev.goculture.api.SightAPI;
 import ru.mdev.goculture.model.Sight;
 
 public class MapFragment extends Fragment {
@@ -67,10 +57,9 @@ public class MapFragment extends Fragment {
     private LocationListenerProxy locationListener;
     private LocationManager locationManager;
     private MyLocationNewOverlay locationOverlay;
+    private Criteria fineCriteria;
 
-    public static final String BASE_URL = "https://mdev-goculture.herokuapp.com";
-    private SightAPI sightAPI;
-    private ArrayList<Sight> sights = new ArrayList<>();
+    private ArrayList<Sight> sights;
 
     private float POINT_RADIUS = 100;
     private final int PROX_ALERT_EXPIRATION = -1;
@@ -85,27 +74,14 @@ public class MapFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Gson gson = new GsonBuilder().create();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        sightAPI = retrofit.create(SightAPI.class);
+        fineCriteria = new Criteria();
+        fineCriteria.setAccuracy(Criteria.ACCURACY_FINE);
+        fineCriteria.setHorizontalAccuracy(Criteria.ACCURACY_HIGH);
+        fineCriteria.setBearingAccuracy(Criteria.ACCURACY_HIGH);
+        fineCriteria.setBearingRequired(true);
 
-        sightAPI.getSight().enqueue(new Callback<ArrayList<Sight>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Sight>> call, Response<ArrayList<Sight>> response) {
-                if (response.code() == 200) {
-                    sights.addAll(response.body());
-                    setupSightsMarkers();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Sight>> call, Throwable t) {
-                Log.d("ApiResponse", t.getMessage());
-            }
-        });
+        SightsCollector sightsCollector = new SightsCollector();
+        sights = sightsCollector.getAll();
     }
 
     @Override
@@ -154,6 +130,10 @@ public class MapFragment extends Fragment {
     public void onResume() {
         super.onResume();
         setupSightsMarkers();
+        if (locationManager.getBestProvider(fineCriteria, true) == null) {
+            Toast.makeText(context, "У вас геолокация выключена.\nВключите, пожалуйста -_-", Toast.LENGTH_LONG).show();
+            return; // FIXME: Сделать запрос на включение GPS. Иначе приложение сразу вылетает
+        }
         locationOverlay.enableMyLocation();
         locationListener.startListening(new GeoUpdateHandler(this), 1000, 3);
 
@@ -170,12 +150,21 @@ public class MapFragment extends Fragment {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+//        Log.d("Permission", locationManager.getAllProviders().toString());
+//        try {
+//            for (int i = 0; i < locationManager.getAllProviders().size(); i++) {
+//                Log.d("Permission", locationManager.getLastKnownLocation(locationManager.g).toString());
+//            }
+//        } catch (Exception e) {
+//            Log.d("Permission", e.getMessage());
+//        }
+
         Location location = locationManager.getLastKnownLocation(locationManager.getAllProviders().get(0));
-        for(Sight sight: sights){
-            if((Math.abs(sight.getLatitude() - location.getLatitude()) < distance) && (Math.abs(sight.getLongitude() - location.getLongitude()) < distance)){
+        for (Sight sight: sights) {
+            if ((Math.abs(sight.getPoint().getLat() - location.getLatitude()) < distance) && (Math.abs(sight.getPoint().getLon() - location.getLongitude()) < distance)){
                 Log.i("SIGHT", "work");
-                locationManager.addProximityAlert(sight.getLatitude(), // the latitude of the central point of the alert region
-                        sight.getLongitude(), // the longitude of the central point of the alert region
+                locationManager.addProximityAlert(sight.getPoint().getLat(), // the latitude of the central point of the alert region
+                        sight.getPoint().getLon(), // the longitude of the central point of the alert region
                         POINT_RADIUS, // the radius of the central point of the alert region, in meters
                         PROX_ALERT_EXPIRATION, // time for this proximity alert, in milliseconds, or -1 to indicate no expiration
                         proximityIntent // will be used to generate an Intent to fire when entry to or exit from the alert region is detected
@@ -214,9 +203,10 @@ public class MapFragment extends Fragment {
         for (Sight sight : sights) {
             Marker marker = new Marker(map);
 //            marker.setIcon(getResources().getDrawable(R.drawable.ic_location_pin));
+            marker.setTitle(sight.getName());
             map.getOverlays().add(marker);
 
-            GeoPoint point = new GeoPoint(sight.getLatitude(), sight.getLongitude());
+            GeoPoint point = new GeoPoint(sight.getPoint().getLat(), sight.getPoint().getLon());
             marker.setPosition(point);
         }
         map.invalidate();
