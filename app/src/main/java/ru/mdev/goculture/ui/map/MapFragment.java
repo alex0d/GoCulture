@@ -2,6 +2,7 @@ package ru.mdev.goculture.ui.map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -24,6 +25,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -129,6 +131,7 @@ public class MapFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
         setupSightsMarkers();
         if (locationManager.getBestProvider(fineCriteria, true) == null) {
             Toast.makeText(context, "У вас геолокация выключена.\nВключите, пожалуйста -_-", Toast.LENGTH_LONG).show();
@@ -199,6 +202,12 @@ public class MapFragment extends Fragment {
         map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+    }
+
     private void setupSightsMarkers() {
         for (Sight sight : sights) {
             Marker marker = new Marker(map);
@@ -211,5 +220,4 @@ public class MapFragment extends Fragment {
         }
         map.invalidate();
     }
-
 }
