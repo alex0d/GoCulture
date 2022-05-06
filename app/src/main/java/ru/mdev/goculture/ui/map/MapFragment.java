@@ -63,10 +63,11 @@ public class MapFragment extends Fragment {
 
     private ArrayList<Sight> sights;
 
-    private float POINT_RADIUS = 100;
+    private float POINT_RADIUS = 50;
     private final int PROX_ALERT_EXPIRATION = -1;
     private final String PROX_ALERT_INTENT = "ru.mdev.goculture.ui.map";
     private final double distance = 0.0003;
+    private final Intent intent = new Intent(PROX_ALERT_INTENT);
 
     public static MapFragment newInstance() {
         return new MapFragment();
@@ -133,26 +134,16 @@ public class MapFragment extends Fragment {
         super.onResume();
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
         setupSightsMarkers();
-        if (locationManager.getBestProvider(fineCriteria, true) == null) {
+
+        if (locationManager.getBestProvider(fineCriteria, true) == null &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(context, "У вас геолокация выключена.\nВключите, пожалуйста -_-", Toast.LENGTH_LONG).show();
             return; // FIXME: Сделать запрос на включение GPS. Иначе приложение сразу вылетает
         }
         locationOverlay.enableMyLocation();
         locationListener.startListening(new GeoUpdateHandler(this), 1000, 3);
 
-        Intent intent = new Intent(PROX_ALERT_INTENT);
-        PendingIntent proximityIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
 //        Log.d("Permission", locationManager.getAllProviders().toString());
 //        try {
 //            for (int i = 0; i < locationManager.getAllProviders().size(); i++) {
@@ -162,15 +153,17 @@ public class MapFragment extends Fragment {
 //            Log.d("Permission", e.getMessage());
 //        }
 
-        Location location = locationManager.getLastKnownLocation(locationManager.getAllProviders().get(0));
+        PendingIntent proximityIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(location == null){return;}
         for (Sight sight: sights) {
             if ((Math.abs(sight.getPoint().getLat() - location.getLatitude()) < distance) && (Math.abs(sight.getPoint().getLon() - location.getLongitude()) < distance)){
                 Log.i("SIGHT", "work");
-                locationManager.addProximityAlert(sight.getPoint().getLat(), // the latitude of the central point of the alert region
-                        sight.getPoint().getLon(), // the longitude of the central point of the alert region
-                        POINT_RADIUS, // the radius of the central point of the alert region, in meters
-                        PROX_ALERT_EXPIRATION, // time for this proximity alert, in milliseconds, or -1 to indicate no expiration
-                        proximityIntent // will be used to generate an Intent to fire when entry to or exit from the alert region is detected
+                locationManager.addProximityAlert(sight.getPoint().getLat(),
+                        sight.getPoint().getLon(),
+                        POINT_RADIUS,
+                        PROX_ALERT_EXPIRATION,
+                        proximityIntent
                 );
             }
         }

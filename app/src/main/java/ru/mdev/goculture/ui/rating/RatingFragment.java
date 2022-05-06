@@ -1,14 +1,22 @@
 package ru.mdev.goculture.ui.rating;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
 import ru.mdev.goculture.R;
+import ru.mdev.goculture.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +24,56 @@ import ru.mdev.goculture.R;
  * create an instance of this fragment.
  */
 public class RatingFragment extends Fragment {
+
+    private Context context;
+    private RatingAdapter ratingAdapter;
+    private String[] nicknameUsers = new String[]{"Clouds",
+            "Sun",
+            "Partial clouds",
+            "Snow",
+            "Sleet",
+            "Mist",
+            "Clear",
+            "Rain",
+            "Rain thunder",
+            "Fog",
+            "Partial clouds",
+            "Snow",
+            "Sleet",
+            "Mist",
+            "Clear",
+            "Rain",
+            "Sleet",
+            "Mist",
+            "Clear",
+            "Sleet",
+            "Mist",
+            "Clear",};
+    private int[] scoreUsers = new int[]{123,
+            43,
+            23,
+            54,
+            7685,
+            765,
+            65,
+            98,
+            0,
+            8634,
+            23,
+            54,
+            7685,
+            765,
+            65,
+            98,
+            0,
+            23,
+            54,
+            7685,
+            765,
+            65,
+            98,
+            0,
+            23};
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +119,33 @@ public class RatingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_rating, container, false);
+        context = inflater.getContext();
+        View view = inflater.inflate(R.layout.fragment_rating, container, false);
+        initRecyclerView(view);
+        return view;
+    }
+
+    private void initRecyclerView(View view) {
+        RecyclerView recyclerView = view.findViewById(R.id.rating_list);
+        ratingAdapter = new RatingAdapter(generateData());
+        recyclerView.setAdapter(ratingAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+        recyclerView.setLayoutManager(layoutManager);
+    }
+
+    private ArrayList<User> generateData() {
+        ArrayList<User> list = new ArrayList<>();
+        for(int i=0;i<nicknameUsers.length;i++) {
+            list.add(new User(nicknameUsers[i], scoreUsers[i]));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            list.sort(new Comparator<User>() {
+                @Override
+                public int compare(User user1, User user2) {
+                    return (int) (user2.getScore() - user1.getScore());
+                }
+            });
+        }
+        return list;
     }
 }
