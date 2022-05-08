@@ -22,7 +22,10 @@ public class SightsCollector {
     private ArrayList<Sight> sights = new ArrayList<>();
     private SightAPI sightAPI;
 
-    public SightsCollector() {
+    private SightResponseCallback sightResponseCallback;
+
+    public SightsCollector(SightResponseCallback sightResponseCallback) {
+        this.sightResponseCallback = sightResponseCallback;
         Gson gson = new GsonBuilder().create();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -30,9 +33,10 @@ public class SightsCollector {
                 .build();
 
         sightAPI = retrofit.create(SightAPI.class);
+        requestAll();
     }
 
-    public ArrayList<Sight> getAll() {
+    private void requestAll() {
         // RUSSIA: Latitude from 41.28413 to 71.69002 and longitude from 19.90929 to 177.5103.
         // But it includes a few more countries...
         sightAPI.getSightsByBbox(
@@ -52,6 +56,7 @@ public class SightsCollector {
                     sights.addAll(response.body());
                 }
                 Log.d("OpenTripMapAPI", response.toString());
+                sightResponseCallback.onSightResponse();
             }
 
             @Override
@@ -59,6 +64,9 @@ public class SightsCollector {
                 Log.d("OpenTripManAPI", t.getMessage());
             }
         });
+    }
+
+    public ArrayList<Sight> getAll() {
         return sights;
     }
 }

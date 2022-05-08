@@ -51,7 +51,7 @@ import java.util.ArrayList;
 import ru.mdev.goculture.R;
 import ru.mdev.goculture.model.Sight;
 
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements SightResponseCallback {
 
     private MapView map;
     private IMapController mapController;
@@ -61,6 +61,7 @@ public class MapFragment extends Fragment {
     private MyLocationNewOverlay locationOverlay;
     private Criteria fineCriteria;
 
+    SightsCollector sightsCollector;
     private ArrayList<Sight> sights;
 
     private float POINT_RADIUS = 50;
@@ -83,8 +84,7 @@ public class MapFragment extends Fragment {
         fineCriteria.setBearingAccuracy(Criteria.ACCURACY_HIGH);
         fineCriteria.setBearingRequired(true);
 
-        SightsCollector sightsCollector = new SightsCollector();
-        sights = sightsCollector.getAll();
+        sightsCollector = new SightsCollector(this);
     }
 
     @Override
@@ -202,6 +202,9 @@ public class MapFragment extends Fragment {
     }
 
     private void setupSightsMarkers() {
+        if (sights == null) {
+            return;
+        }
         for (Sight sight : sights) {
             Marker marker = new Marker(map);
 //            marker.setIcon(getResources().getDrawable(R.drawable.ic_location_pin));
@@ -212,5 +215,11 @@ public class MapFragment extends Fragment {
             marker.setPosition(point);
         }
         map.invalidate();
+    }
+
+    @Override
+    public void onSightResponse() {
+        sights = sightsCollector.getAll();
+        setupSightsMarkers();
     }
 }
