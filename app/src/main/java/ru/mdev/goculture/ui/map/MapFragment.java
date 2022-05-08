@@ -126,6 +126,8 @@ public class MapFragment extends Fragment implements SightResponseCallback {
         locationOverlay = new MyLocationNewOverlay(map);
         locationListener = new LocationListenerProxy(locationManager);
 
+        setupSightsMarkers();
+
         return view;
     }
 
@@ -133,7 +135,6 @@ public class MapFragment extends Fragment implements SightResponseCallback {
     public void onResume() {
         super.onResume();
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-        setupSightsMarkers();
 
         if (locationManager.getBestProvider(fineCriteria, true) == null &&
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
