@@ -2,30 +2,24 @@ package ru.mdev.goculture.ui.map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -33,16 +27,10 @@ import androidx.core.app.ActivityCompat;
 import org.osmdroid.LocationListenerProxy;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
-import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.util.LocationUtils;
-import org.osmdroid.util.TileSystem;
-import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
@@ -70,6 +58,8 @@ public class MapFragment extends Fragment implements SightResponseCallback {
     private final double distance = 0.0003;
     private final Intent intent = new Intent(PROX_ALERT_INTENT);
 
+    private SharedPreferences sharedPref;
+
     public static MapFragment newInstance() {
         return new MapFragment();
     }
@@ -77,6 +67,8 @@ public class MapFragment extends Fragment implements SightResponseCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPref = getActivity().getSharedPreferences("mapCenter", Context.MODE_PRIVATE);
 
         fineCriteria = new Criteria();
         fineCriteria.setAccuracy(Criteria.ACCURACY_FINE);
@@ -91,8 +83,6 @@ public class MapFragment extends Fragment implements SightResponseCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_map, container, false);
-//        MapViewModel mapViewModel =
-//                new ViewModelProvider(this).get(MapViewModel.class);
 
         context = inflater.getContext();
 
@@ -116,9 +106,22 @@ public class MapFragment extends Fragment implements SightResponseCallback {
         map.getOverlays().add(mLocationOverlay);
 
         mapController = map.getController();
-        mapController.setZoom(15.0);
 
-        GeoPoint startPoint = new GeoPoint(55.756, 37.618);
+        float oldZoom = sharedPref.getFloat("mapZoom", 0);
+        if (oldZoom != 0) {
+            mapController.setZoom(oldZoom);
+        } else {
+            mapController.setZoom(15.0);
+        }
+
+        double oldCenterLatitude = sharedPref.getFloat("mapCenterLatitude", 0);
+        double oldCenterLongitude = sharedPref.getFloat("mapCenterLongitude", 0);
+        GeoPoint startPoint;
+        if (oldCenterLatitude != 0 && oldCenterLongitude != 0) {
+            startPoint = new GeoPoint(oldCenterLatitude, oldCenterLongitude);
+        } else {
+            startPoint = new GeoPoint(55.756, 37.618);
+        }
         mapController.setCenter(startPoint);
 
         // TODO: Разобраться с LocationOverlay.
@@ -190,6 +193,12 @@ public class MapFragment extends Fragment implements SightResponseCallback {
         super.onPause();
         locationListener.stopListening();
         locationOverlay.disableMyLocation();
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putFloat("mapCenterLatitude", (float)map.getMapCenter().getLatitude());
+        editor.putFloat("mapCenterLongitude", (float)map.getMapCenter().getLongitude());
+        editor.putFloat("mapZoom", (float)map.getZoomLevelDouble());
+        editor.apply();
 
         //this will refresh the osmdroid configuration on resuming.
         //if you make changes to the configuration, use
