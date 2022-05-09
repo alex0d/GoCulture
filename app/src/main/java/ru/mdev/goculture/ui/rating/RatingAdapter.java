@@ -32,7 +32,7 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.ViewRow> {
     @Override
     public void onBindViewHolder(@NonNull ViewRow holder, int position) {
         holder.number.setText(String.valueOf(position + 1));
-        holder.nickname.setText(arrayList.get(position).getNickname());
+        holder.nickname.setText(arrayList.get(position).getUsername());
         holder.score.setText(String.valueOf(arrayList.get(position).getScore()));
     }
 

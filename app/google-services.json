@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "517613829809",
+    "firebase_url": "https://goculture-ca6c6-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "goculture-ca6c6",
+    "storage_bucket": "goculture-ca6c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:517613829809:android:779673f35768ee203b6c90",
+        "android_client_info": {
+          "package_name": "ru.mdev.goculture"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "517613829809-kb2b1e22m1cq084tv7iseqccusnon8cs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.mdev.goculture",
+            "certificate_hash": "79d89a67ea4bc38bae59ae13e6394374437e5e83"
+          }
+        },
+        {
+          "client_id": "517613829809-62u6kh011uud91spj5k4aunrn7qvhjr0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfXCNBHsp3eeUfkV5vT3sqd7TCl-Stu2k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "517613829809-62u6kh011uud91spj5k4aunrn7qvhjr0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

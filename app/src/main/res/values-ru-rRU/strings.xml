@@ -5,4 +5,11 @@
     <string name="title_rating">Рейтинг</string>
     <string name="title_friends">Друзья</string>
     <string name="title_profile">Профиль</string>
+    <string name="username_empty">Введите имя пользователя</string>
+    <string name="email_empty">Введите адрес электронной почты</string>
+    <string name="password_empty">Введите пароль</string>
+    <string name="email_invalid">Укажите действительный адрес электронной почты</string>
+    <string name="password_too_short">Длина пароля не может быть меньше 6 символов</string>
+    <string name="welcome_message">"Добро пожаловать, "</string>
+    <string name="error_message">Произошла ошибка. Попробуйте еще раз</string>
 </resources>

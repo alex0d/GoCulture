@@ -8,11 +8,12 @@
         <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.1415" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1415" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/ic_map_24dp.xml" value="0.1415" />
+        <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/activity_login.xml" value="0.17708333333333334" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
-        <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/fragment_friends.xml" value="0.22" />
+        <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/activity_register.xml" value="0.17708333333333334" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/fragment_home.xml" value="0.10520833333333333" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/fragment_map.xml" value="0.3333333333333333" />
-        <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/fragment_rating.xml" value="0.1" />
+        <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/fragment_rating.xml" value="0.25" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3333333333333333" />
       </map>
     </option>

@@ -2,20 +2,39 @@ package ru.mdev.goculture.model;
 
 public class User {
 
-    private String nickname;
+    private String username;
+    private String email;
     private int score;
 
-    public User(String nickname, int score) {
-        this.nickname = nickname;
+    public User() {
+
+    }
+
+    public User(String username, int score) {
+        this.username = username;
         this.score = score;
     }
 
-    public String getNickname() {
-        return nickname;
+    public User(String username, String email) {
+        this.username = username;
+        this.email = email;
+        this.score = 0;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getScore() {
