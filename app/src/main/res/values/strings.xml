@@ -13,4 +13,10 @@
     <string name="password_too_short">Passwords must be at least 6 characters</string>
     <string name="welcome_message">Welcome,</string>
     <string name="error_message">An error occurred. Please try again</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="register">Register</string>
+    <string name="username">Username</string>
 </resources>

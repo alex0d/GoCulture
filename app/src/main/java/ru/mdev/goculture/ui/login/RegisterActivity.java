@@ -3,6 +3,7 @@ package ru.mdev.goculture.ui.login;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +19,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-import com.j256.ormlite.stmt.query.In;
 
 import ru.mdev.goculture.MainActivity;
 import ru.mdev.goculture.R;
@@ -42,10 +42,11 @@ public class RegisterActivity extends AppCompatActivity {
         usernameEditText = findViewById(R.id.username);
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
-        registerButton = findViewById(R.id.register);
-        progressBar = findViewById(R.id.progress_bar);
 
+        registerButton = findViewById(R.id.register);
         registerButton.setOnClickListener(v -> registerUser());
+
+        progressBar = findViewById(R.id.progress_bar);
     }
 
     private void registerUser() {
@@ -94,19 +95,23 @@ public class RegisterActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         Toast.makeText(RegisterActivity.this, getResources().getString(R.string.welcome_message) + username, Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                                        Intent mainActivityIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                                        startActivity(mainActivityIntent);
+                                        setResult(Activity.RESULT_OK, new Intent().putExtra("isRegistered", true));
+                                        finish();
                                     } else {
-                                        Log.e("Firebase1", "onComplete: Failed=" + task.getException().getMessage());
+                                        Log.e("Firebase", "setValue(user) onComplete: Failed=" + task.getException().getMessage());
                                         Toast.makeText(RegisterActivity.this, getResources().getString(R.string.error_message), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
                         } else {
-                            Log.e("Firebase2", "onComplete: Failed=" + task.getException().getMessage());
+                            Log.e("Firebase", "createUserWithEmailAndPassword onComplete: Failed=" + task.getException().getMessage());
                             Toast.makeText(RegisterActivity.this, getResources().getString(R.string.error_message), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
         progressBar.setVisibility(View.GONE);
     }
+
 }

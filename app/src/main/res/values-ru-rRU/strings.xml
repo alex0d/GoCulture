@@ -12,4 +12,10 @@
     <string name="password_too_short">Длина пароля не может быть меньше 6 символов</string>
     <string name="welcome_message">"Добро пожаловать, "</string>
     <string name="error_message">Произошла ошибка. Попробуйте еще раз</string>
+    <string name="email">Электронная почта</string>
+    <string name="password">Пароль</string>
+    <string name="sign_in">Войти</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="username">Имя пользователя</string>
 </resources>
