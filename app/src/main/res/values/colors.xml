@@ -10,4 +10,5 @@
 
     <color name="dodger_blue">#1e90ff</color>
     <color name="gray_900">#222222</color>
+    <color name="rating_background">#E9EEF2</color>
 </resources>

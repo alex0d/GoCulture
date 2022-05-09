@@ -32,7 +32,7 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.ViewRow> {
     @Override
     public void onBindViewHolder(@NonNull ViewRow holder, int position) {
         holder.number.setText(String.valueOf(position + 1));
-        holder.nickname.setText(arrayList.get(position).getUsername());
+        holder.username.setText(arrayList.get(position).getUsername());
         holder.score.setText(String.valueOf(arrayList.get(position).getScore()));
     }
 
@@ -48,13 +48,13 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.ViewRow> {
     public class ViewRow extends RecyclerView.ViewHolder {
 
         TextView number;
-        TextView nickname;
+        TextView username;
         TextView score;
 
         public ViewRow(@NonNull View itemView) {
             super(itemView);
             number = itemView.findViewById(R.id.number);
-            nickname = itemView.findViewById(R.id.nickname);
+            username = itemView.findViewById(R.id.username);
             score = itemView.findViewById(R.id.score);
         }
     }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 import ru.mdev.goculture.R;
@@ -27,7 +28,7 @@ public class RatingFragment extends Fragment {
 
     private Context context;
     private RatingAdapter ratingAdapter;
-    private String[] nicknameUsers = new String[]{"Clouds",
+    private String[] usernameUsers = new String[]{"Clouds",
             "Sun",
             "Partial clouds",
             "Snow",
@@ -135,17 +136,10 @@ public class RatingFragment extends Fragment {
 
     private ArrayList<User> generateData() {
         ArrayList<User> list = new ArrayList<>();
-        for(int i=0;i<nicknameUsers.length;i++) {
-            list.add(new User(nicknameUsers[i], scoreUsers[i]));
+        for(int i=0;i<usernameUsers.length;i++) {
+            list.add(new User(usernameUsers[i], scoreUsers[i]));
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            list.sort(new Comparator<User>() {
-                @Override
-                public int compare(User user1, User user2) {
-                    return (int) (user2.getScore() - user1.getScore());
-                }
-            });
-        }
+        Collections.sort(list, (user1, user2) -> user2.getScore() - user1.getScore());
         return list;
     }
 }
