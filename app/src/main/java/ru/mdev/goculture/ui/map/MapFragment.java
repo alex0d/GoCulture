@@ -145,6 +145,7 @@ public class MapFragment extends Fragment implements SightResponseCallback {
             Toast.makeText(context, "У вас геолокация выключена.\nВключите, пожалуйста -_-", Toast.LENGTH_LONG).show();
             return; // FIXME: Сделать запрос на включение GPS. Иначе приложение сразу вылетает
         }
+
         locationOverlay.enableMyLocation();
         locationListener.startListening(new GeoUpdateHandler(this), 1000, 3);
 
@@ -156,25 +157,6 @@ public class MapFragment extends Fragment implements SightResponseCallback {
 //        } catch (Exception e) {
 //            Log.d("Permission", e.getMessage());
 //        }
-
-        PendingIntent proximityIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if(location == null){return;}
-        if (sights != null) {
-            for (Sight sight : sights) {
-                if ((Math.abs(sight.getPoint().getLat() - location.getLatitude()) < distance) && (Math.abs(sight.getPoint().getLon() - location.getLongitude()) < distance)) {
-                    Log.i("SIGHT", "work");
-                    locationManager.addProximityAlert(sight.getPoint().getLat(),
-                            sight.getPoint().getLon(),
-                            POINT_RADIUS,
-                            PROX_ALERT_EXPIRATION,
-                            proximityIntent
-                    );
-                }
-            }
-        }
-        IntentFilter filter = new IntentFilter(PROX_ALERT_INTENT);
-        context.registerReceiver(new ProximityIntentReceiver(), filter);
     }
 
     @Override

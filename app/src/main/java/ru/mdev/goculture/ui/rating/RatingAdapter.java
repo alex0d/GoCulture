@@ -38,7 +38,6 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.ViewRow> {
 
     @Override
     public int getItemCount() {
-        Log.i("SIGHT", String.valueOf(arrayList.size()));
         if(arrayList.size() > 20){
             return 20;
         }
