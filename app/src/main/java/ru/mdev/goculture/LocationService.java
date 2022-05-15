@@ -60,6 +60,9 @@ public class LocationService extends Service {
     @Override
     public void onCreate() {
 
+        final SightResponseCallback sightResponseCallback = () -> sights = sightsCollector.getAll();
+        sightsCollector = new SightsCollector(sightResponseCallback);
+
         timer = new Timer();
         context = getApplicationContext();
 
@@ -100,7 +103,7 @@ public class LocationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        long INTERVAL = 60000;
+        long INTERVAL = 600;
         timer.schedule(timerTask, 0, INTERVAL);
         return START_STICKY;
     }
@@ -119,9 +122,6 @@ public class LocationService extends Service {
                 && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-
-        final SightResponseCallback sightResponseCallback = () -> sights = sightsCollector.getAll();
-        sightsCollector = new SightsCollector(sightResponseCallback);
 
         Location location = getBestLocation();
         PendingIntent proximityIntent = PendingIntent.getBroadcast(context, 0, new Intent(PROXY_ALERT_INTENT), PendingIntent.FLAG_IMMUTABLE);
