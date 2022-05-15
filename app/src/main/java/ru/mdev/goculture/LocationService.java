@@ -103,7 +103,7 @@ public class LocationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        long INTERVAL = 600;
+        long INTERVAL = 60000;
         timer.schedule(timerTask, 0, INTERVAL);
         return START_STICKY;
     }
