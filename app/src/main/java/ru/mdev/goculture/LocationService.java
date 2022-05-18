@@ -124,7 +124,7 @@ public class LocationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        long INTERVAL = 6000;
+        long INTERVAL = 60000;
         int delay = 0;
         timer.schedule(timerTask, delay, INTERVAL);
         return START_STICKY;
@@ -174,8 +174,7 @@ public class LocationService extends Service {
             if(getDistance(location.getLatitude(), sight.getPoint().getLat(), location.getLongitude(), sight.getPoint().getLon())
                     < POINT_RADIUS){
                 addScoreInDb();
-                sendNotification();
-                Log.i(TAG, "entering if");
+                Log.i(TAG, "entering");
             }
         }
         //}
