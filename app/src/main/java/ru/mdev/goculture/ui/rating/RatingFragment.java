@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ import ru.mdev.goculture.model.User;
 public class RatingFragment extends Fragment {
 
     private DatabaseReference databaseReference;
+    private Query scoreDatabaseOrder;
+    private ChildEventListener scoreChildEventListener;
 
     private Context context;
     private RatingAdapter ratingAdapter;
@@ -45,7 +48,8 @@ public class RatingFragment extends Fragment {
         ratingAdapter = new RatingAdapter(users);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        databaseReference.orderByChild("score").limitToLast(20).addChildEventListener(new ChildEventListener() {
+        scoreDatabaseOrder = databaseReference.orderByChild("score").limitToLast(20);
+        scoreChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 User user = snapshot.getValue(User.class);
@@ -73,7 +77,8 @@ public class RatingFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.d("DatabaseOrder", "onCancelled");
             }
-        });
+        };
+        scoreDatabaseOrder.addChildEventListener(scoreChildEventListener);
 
     }
 
@@ -88,5 +93,11 @@ public class RatingFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        scoreDatabaseOrder.removeEventListener(scoreChildEventListener);
     }
 }

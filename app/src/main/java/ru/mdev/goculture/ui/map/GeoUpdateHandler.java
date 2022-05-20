@@ -25,11 +25,7 @@ public class GeoUpdateHandler implements LocationListener
     @Override
     public void onLocationChanged(Location location)
     {
-        String msg = String.format(Locale.getDefault(),
-                "Your location is %2.3f %2.3f \nI'm watching you!",
-                    location.getLatitude(),
-                    location.getLongitude());
-        Toast.makeText(mMapActivity.getContext(), msg, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onLocationChanged called");
     }
 
     @Override

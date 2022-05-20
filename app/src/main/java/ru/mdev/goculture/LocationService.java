@@ -1,6 +1,7 @@
 package ru.mdev.goculture;
 
 import android.Manifest;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -55,6 +56,7 @@ public class LocationService extends Service {
     private List<Sight> sights;
     private SightsCollector sightsCollector;
 
+    final int SCORE_INCREASE_BY = 10;
     final float POINT_RADIUS = 50;
     final int PROXY_ALERT_EXPIRATION = -1;
     final String PROXY_ALERT_INTENT = "ru.mdev.goculture.ui.map";
@@ -225,7 +227,7 @@ public class LocationService extends Service {
                 if( user == null){
                     return;
                 }
-                mDatabaseReference.child(firebaseUser.getUid()).child("score").setValue(user.getScore() + 1);
+                mDatabaseReference.child(firebaseUser.getUid()).child("score").setValue(user.getScore() + SCORE_INCREASE_BY);
             }
 
             @Override
