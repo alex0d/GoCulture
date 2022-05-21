@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="55dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingHorizontal="15dp" >
+    android:paddingVertical="0dp"
+    style="@android:style/Widget.Holo.Button.Borderless" >
 
     <ImageView
         android:id="@+id/option_icon"
@@ -29,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray_900"
+        android:layout_marginHorizontal="5dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
