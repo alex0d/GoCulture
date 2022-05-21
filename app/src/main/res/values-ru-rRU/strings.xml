@@ -18,4 +18,5 @@
     <string name="forgot_password">Забыли пароль?</string>
     <string name="register">Зарегистрироваться</string>
     <string name="username">Имя пользователя</string>
+    <string name="sign_out">Выйти</string>
 </resources>

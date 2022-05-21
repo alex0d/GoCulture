@@ -36,7 +36,6 @@ public class RatingFragment extends Fragment {
     private Query scoreDatabaseOrder;
     private ChildEventListener scoreChildEventListener;
 
-    private Context context;
     private RatingAdapter ratingAdapter;
 
     private ArrayList<User> users = new ArrayList<>();
