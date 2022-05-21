@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.rating.RatingFragment"
-    android:background="@color/rating_background">
+    android:background="@color/rating_background"
+    android:layout_marginBottom="?attr/actionBarSize" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_images"
@@ -23,7 +24,7 @@
             android:layout_marginStart="10dp"
             android:background="@drawable/rating_background_icon"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/user_icon_image"
+            app:layout_constraintEnd_toStartOf="@id/user_icon_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
@@ -42,8 +43,8 @@
             android:layout_height="50dp"
             android:background="@drawable/rating_background_icon"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/score_image"
-            app:layout_constraintStart_toEndOf="@+id/place_image"
+            app:layout_constraintEnd_toStartOf="@id/score_image"
+            app:layout_constraintStart_toEndOf="@id/place_image"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
@@ -63,7 +64,7 @@
             android:background="@drawable/rating_background_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/user_icon_image"
+            app:layout_constraintStart_toEndOf="@id/user_icon_image"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
@@ -82,9 +83,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/top_images"
-        app:layout_constraintTop_toBottomOf="@+id/top_images" />
+        app:layout_constraintTop_toBottomOf="@id/top_images" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
