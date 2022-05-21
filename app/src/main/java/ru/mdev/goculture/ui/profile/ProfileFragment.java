@@ -2,15 +2,24 @@ package ru.mdev.goculture.ui.profile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,6 +46,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import coil.Coil;
@@ -48,8 +58,10 @@ import io.getstream.avatarview.AvatarView;
 import ru.mdev.goculture.R;
 import ru.mdev.goculture.model.User;
 import ru.mdev.goculture.ui.login.LoginActivity;
+import ru.mdev.goculture.ui.rating.OptionCallback;
+import ru.mdev.goculture.ui.rating.RatingAdapter;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements OptionCallback {
 
     private static final String TAG = "ProfileFragment";
     private Context context;
@@ -59,9 +71,11 @@ public class ProfileFragment extends Fragment {
 
     private User currentUser;
 
+    private Toolbar toolbar;
     private AvatarView avatarView;
     private TextView usernameTextView;
-    private Button signOutButton;
+    private TextView emailTextView;
+    private TextView scoreTextView;
 
     private final ActivityResultLauncher<CropImageContractOptions> cropImage =
             registerForActivityResult(new CropImageContract(), this::onCropImageResult);
@@ -99,13 +113,30 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         context = inflater.getContext();
 
+        toolbar = view.findViewById(R.id.profile_toolbar);
+        toolbar.inflateMenu(R.menu.profile_toolbar_menu);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Log.d(TAG, "onMenuItemClick");
+                return false;
+            }
+        });
+
         avatarView = view.findViewById(R.id.avatar_view);
         avatarView.setOnClickListener(v -> changeUserAvatar());
 
         usernameTextView = view.findViewById(R.id.username);
 
-        signOutButton = view.findViewById(R.id.sign_out);
-        signOutButton.setOnClickListener(v -> signOut());
+        emailTextView = view.findViewById(R.id.email);
+
+        scoreTextView = view.findViewById(R.id.score);
+
+        OptionAdapter optionAdapter = buildOptionAdapter();
+        RecyclerView recyclerView = view.findViewById(R.id.options_recycler);
+        recyclerView.setAdapter(optionAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(inflater.getContext());
+        recyclerView.setLayoutManager(layoutManager);
 
         return view;
     }
@@ -113,6 +144,8 @@ public class ProfileFragment extends Fragment {
     private void updateProfileInfo() {
         loadAvatarView(currentUser.getAvatarUrl());
         usernameTextView.setText(currentUser.getUsername());
+        emailTextView.setText(currentUser.getEmail());
+        scoreTextView.setText(getString(R.string.user_score, String.valueOf(currentUser.getScore())));
     }
 
     private void loadAvatarView(String data) {
@@ -131,7 +164,6 @@ public class ProfileFragment extends Fragment {
                 .setAspectRatio(1, 1)
                 .setRequestedSize(600, 600)
                 .setCropShape(CropImageView.CropShape.OVAL);
-//                .setActivityTitle("Аватар");
 
         cropImage.launch(options);
     }
@@ -182,9 +214,53 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void signOut() {
+    private OptionAdapter buildOptionAdapter() {
+        ArrayList<Drawable> icons = new ArrayList<>();
+        ArrayList<Integer> strings = new ArrayList<>();
+
+        icons.add(AppCompatResources.getDrawable(context, R.drawable.baseline_rename_outline_24));
+        strings.add(R.string.change_username);
+
+        icons.add(AppCompatResources.getDrawable(context, R.drawable.baseline_mail_outline_24));
+        strings.add(R.string.change_email);
+
+        icons.add(AppCompatResources.getDrawable(context, R.drawable.baseline_check_24));
+        strings.add(R.string.confirm_email);
+
+        icons.add(AppCompatResources.getDrawable(context, R.drawable.baseline_password_24));
+        strings.add(R.string.change_password);
+
+        icons.add(AppCompatResources.getDrawable(context, R.drawable.baseline_logout_24));
+        strings.add(R.string.sign_out);
+
+        return new OptionAdapter(this, icons, strings);
+    }
+
+    @Override
+    public void changeUsername() {
+
+    }
+
+    @Override
+    public void changeEmail() {
+
+    }
+
+    @Override
+    public void confirmEmail() {
+
+    }
+
+    @Override
+    public void changePassword() {
+
+    }
+
+    @Override
+    public void signOut() {
         mAuth.signOut();
         startActivity(new Intent(context, LoginActivity.class));
         getActivity().finish();
     }
+
 }

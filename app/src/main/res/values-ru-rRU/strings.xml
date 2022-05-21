@@ -19,4 +19,9 @@
     <string name="register">Зарегистрироваться</string>
     <string name="username">Имя пользователя</string>
     <string name="sign_out">Выйти</string>
+    <string name="confirm_email">Подтвердить адрес электронной почты</string>
+    <string name="change_password">Сменить пароль</string>
+    <string name="change_username">Изменить имя пользователя</string>
+    <string name="change_email">Изменить адрес электронной почты</string>
+    <string name="user_score">Рейтинг: %s</string>
 </resources>
