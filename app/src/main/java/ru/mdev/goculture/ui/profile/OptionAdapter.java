@@ -57,10 +57,13 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewRow> {
                     break;
                 case 2:
                     optionCallback.confirmEmail();
+                    break;
                 case 3:
                     optionCallback.changePassword();
+                    break;
                 case 4:
                     optionCallback.signOut();
+                    break;
             }
         });
     }
