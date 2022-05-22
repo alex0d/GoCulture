@@ -1,5 +1,6 @@
 package ru.mdev.goculture.ui.profile;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -7,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
@@ -61,6 +63,10 @@ import ru.mdev.goculture.InformationActivity;
 import ru.mdev.goculture.R;
 import ru.mdev.goculture.model.User;
 import ru.mdev.goculture.ui.login.LoginActivity;
+import ru.mdev.goculture.ui.login.RegisterActivity;
+import ru.mdev.goculture.ui.profile.settings.ChangeEmailActivity;
+import ru.mdev.goculture.ui.profile.settings.ChangePasswordActivity;
+import ru.mdev.goculture.ui.profile.settings.ChangeUsernameActivity;
 import ru.mdev.goculture.ui.rating.OptionCallback;
 
 public class ProfileFragment extends Fragment implements OptionCallback {
@@ -78,6 +84,28 @@ public class ProfileFragment extends Fragment implements OptionCallback {
     private TextView usernameTextView;
     private TextView emailTextView;
     private TextView scoreTextView;
+
+    private final ActivityResultLauncher<Intent> registerActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    if (result.getData() == null) {
+                        return;
+                    }
+                    Intent data = result.getData();
+                    switch (data.getStringExtra("setting")) {
+                        case "changeUsername":
+                            usernameTextView.setText(data.getStringExtra("username"));
+                            break;
+                        case "changeEmail":
+                            emailTextView.setText(data.getStringExtra("email"));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+    );
 
     private final ActivityResultLauncher<CropImageContractOptions> cropImage =
             registerForActivityResult(new CropImageContract(), this::onCropImageResult);
@@ -242,78 +270,14 @@ public class ProfileFragment extends Fragment implements OptionCallback {
 
     @Override
     public void changeUsername() {
-
+        Intent changeUsernameIntent = new Intent(context, ChangeUsernameActivity.class);
+        registerActivityResultLauncher.launch(changeUsernameIntent);
     }
 
     @Override
     public void changeEmail() {
-        View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_change_username, null);
-        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
-
-        EditText newEmailEditText = popupView.findViewById(R.id.new_email);
-        EditText passwordEditText = popupView.findViewById(R.id.password);
-
-        Button cancelButton = popupView.findViewById(R.id.cancel);
-        cancelButton.setOnClickListener(v -> {
-            popupWindow.dismiss();
-            Toast.makeText(context, "Изменение почты отменено", Toast.LENGTH_SHORT).show();
-        });
-
-        Button submitButton = popupView.findViewById(R.id.submit);
-        submitButton.setOnClickListener(v -> {
-            String newEmail = newEmailEditText.getText().toString().trim();
-            String password = passwordEditText.getText().toString();
-
-            if (newEmail.isEmpty()) {
-                newEmailEditText.setError(getResources().getString(R.string.email_empty));
-                newEmailEditText.requestFocus();
-                return;
-            }
-            if (password.isEmpty()) {
-                passwordEditText.setError(getResources().getString(R.string.password_empty));
-                passwordEditText.requestFocus();
-                return;
-            }
-            if (!Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
-                newEmailEditText.setError(getResources().getString(R.string.email_invalid));
-                newEmailEditText.requestFocus();
-                return;
-            }
-
-            FirebaseUser user = mAuth.getCurrentUser();
-            AuthCredential credential = EmailAuthProvider
-                    .getCredential(currentUser.getEmail(), password);
-            user.reauthenticate(credential)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d(TAG, "User re-authenticated.");
-
-                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                user.updateEmail(newEmail)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    currentUser.setEmail(newEmail);
-                                                    FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getCurrentUser().getUid()).setValue(currentUser);
-                                                    Toast.makeText(context, "Почта успешно обновлена!", Toast.LENGTH_SHORT).show();
-                                                    emailTextView.setText(newEmail);
-                                                } else {
-                                                    Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        });
-                            } else {
-                                Toast.makeText(context, "Неправильный логин и пароль!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-            popupWindow.dismiss();
-        });
-
-        popupWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0);
+        Intent changeEmailIntent = new Intent(context, ChangeEmailActivity.class);
+        registerActivityResultLauncher.launch(changeEmailIntent);
     }
 
     @Override
@@ -328,7 +292,8 @@ public class ProfileFragment extends Fragment implements OptionCallback {
 
     @Override
     public void changePassword() {
-
+        Intent changePasswordIntent = new Intent(context, ChangePasswordActivity.class);
+        registerActivityResultLauncher.launch(changePasswordIntent);
     }
 
     @Override

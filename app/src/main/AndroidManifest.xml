@@ -19,6 +19,15 @@
         android:theme="@style/Theme.GoCulture"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".ui.profile.settings.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.settings.ChangeUsernameActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.settings.ChangeEmailActivity"
+            android:exported="false" />
+        <activity
             android:name=".InformationActivity"
             android:exported="false" />
         <activity
@@ -39,7 +48,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.canhub.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
