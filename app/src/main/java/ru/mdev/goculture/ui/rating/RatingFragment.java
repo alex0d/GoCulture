@@ -44,13 +44,17 @@ public class RatingFragment extends Fragment {
         ratingAdapter = new RatingAdapter(users);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        scoreDatabaseOrder = databaseReference.orderByChild("score").limitToLast(20);
+        scoreDatabaseOrder = databaseReference.orderByChild("score").limitToLast(50);
         scoreChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 User user = snapshot.getValue(User.class);
-                users.add(0, user);
-                ratingAdapter.notifyItemInserted(0);
+                int position = 0;
+                if (user.getScore() == 0) {
+                    position = users.size();
+                }
+                users.add(position, user);
+                ratingAdapter.notifyItemInserted(position);
             }
 
             @Override
