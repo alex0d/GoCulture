@@ -8,7 +8,6 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.widget.Toolbar;
@@ -16,13 +15,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.util.Patterns;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,21 +33,21 @@ import com.canhub.cropper.CropImageContract;
 import com.canhub.cropper.CropImageContractOptions;
 import com.canhub.cropper.CropImageOptions;
 import com.canhub.cropper.CropImageView;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.j256.ormlite.stmt.query.In;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -54,14 +56,12 @@ import coil.Coil;
 import coil.ImageLoader;
 import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
-import coil.transform.Transformation;
 import io.getstream.avatarview.AvatarView;
 import ru.mdev.goculture.InformationActivity;
 import ru.mdev.goculture.R;
 import ru.mdev.goculture.model.User;
 import ru.mdev.goculture.ui.login.LoginActivity;
 import ru.mdev.goculture.ui.rating.OptionCallback;
-import ru.mdev.goculture.ui.rating.RatingAdapter;
 
 public class ProfileFragment extends Fragment implements OptionCallback {
 
@@ -247,12 +247,83 @@ public class ProfileFragment extends Fragment implements OptionCallback {
 
     @Override
     public void changeEmail() {
+        View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_change_username, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
 
+        EditText newEmailEditText = popupView.findViewById(R.id.new_email);
+        EditText passwordEditText = popupView.findViewById(R.id.password);
+
+        Button cancelButton = popupView.findViewById(R.id.cancel);
+        cancelButton.setOnClickListener(v -> {
+            popupWindow.dismiss();
+            Toast.makeText(context, "Изменение почты отменено", Toast.LENGTH_SHORT).show();
+        });
+
+        Button submitButton = popupView.findViewById(R.id.submit);
+        submitButton.setOnClickListener(v -> {
+            String newEmail = newEmailEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString();
+
+            if (newEmail.isEmpty()) {
+                newEmailEditText.setError(getResources().getString(R.string.email_empty));
+                newEmailEditText.requestFocus();
+                return;
+            }
+            if (password.isEmpty()) {
+                passwordEditText.setError(getResources().getString(R.string.password_empty));
+                passwordEditText.requestFocus();
+                return;
+            }
+            if (!Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
+                newEmailEditText.setError(getResources().getString(R.string.email_invalid));
+                newEmailEditText.requestFocus();
+                return;
+            }
+
+            FirebaseUser user = mAuth.getCurrentUser();
+            AuthCredential credential = EmailAuthProvider
+                    .getCredential(currentUser.getEmail(), password);
+            user.reauthenticate(credential)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "User re-authenticated.");
+
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                user.updateEmail(newEmail)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    currentUser.setEmail(newEmail);
+                                                    FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getCurrentUser().getUid()).setValue(currentUser);
+                                                    Toast.makeText(context, "Почта успешно обновлена!", Toast.LENGTH_SHORT).show();
+                                                    emailTextView.setText(newEmail);
+                                                } else {
+                                                    Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            } else {
+                                Toast.makeText(context, "Неправильный логин и пароль!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+            popupWindow.dismiss();
+        });
+
+        popupWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0);
     }
 
     @Override
     public void confirmEmail() {
-
+        if (mAuth.getCurrentUser().isEmailVerified()) {
+            Toast.makeText(context, "Почта уже подтверждена!", Toast.LENGTH_LONG).show();
+        } else {
+            mAuth.getCurrentUser().sendEmailVerification()
+                    .addOnCompleteListener(task -> Toast.makeText(context, "Письмо подтверждения выслано!", Toast.LENGTH_LONG).show());
+        }
     }
 
     @Override
