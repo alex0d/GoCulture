@@ -58,6 +58,7 @@ public class RatingFragment extends Fragment {
                     if (users.get(i).getUsername().equals(userChanged.getUsername())) {
                         users.set(i, userChanged);
                         ratingAdapter.notifyItemChanged(i);
+                        break;
                     }
                 }
             }
