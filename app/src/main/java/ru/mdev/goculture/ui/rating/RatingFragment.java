@@ -21,6 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import ru.mdev.goculture.R;
 import ru.mdev.goculture.model.User;
@@ -57,7 +59,8 @@ public class RatingFragment extends Fragment {
                 for (int i = 0; i < users.size(); i++) {
                     if (users.get(i).getUsername().equals(userChanged.getUsername())) {
                         users.set(i, userChanged);
-                        ratingAdapter.notifyItemChanged(i);
+                        Collections.sort(users, (o1, o2) -> o2.getScore() - o1.getScore());
+                        ratingAdapter.notifyDataSetChanged();
                         break;
                     }
                 }
