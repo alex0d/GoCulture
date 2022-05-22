@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/baseline_emoji_events_24.xml" value="0.1415" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/baseline_map_24.xml" value="0.1415" />
+        <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/baseline_photo_camera_24.xml" value="0.196" />
+        <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/circle_button.xml" value="0.259" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.1415" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1415" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/ic_map_24dp.xml" value="0.1415" />
@@ -12,14 +14,16 @@
         <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/outlined_te.xml" value="0.2875" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/rounded_button.xml" value="0.198" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/font/oswald.xml" value="0.396875" />
+        <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/activity_information.xml" value="0.36666666666666664" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/activity_login.xml" value="0.17708333333333334" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/activity_register.xml" value="0.33" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/fragment_friends.xml" value="0.36666666666666664" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/fragment_home.xml" value="0.10520833333333333" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/fragment_map.xml" value="0.3333333333333333" />
-        <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/fragment_profile.xml" value="0.33" />
+        <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/fragment_profile.xml" value="0.25" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/fragment_rating.xml" value="0.5" />
+        <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/option_details.xml" value="0.36666666666666664" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/option_item.xml" value="0.5" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/profile_toolbar_menu.xml" value="0.20416666666666666" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/rating_item.xml" value="0.5" />

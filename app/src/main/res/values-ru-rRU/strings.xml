@@ -24,4 +24,16 @@
     <string name="change_username">Изменить имя пользователя</string>
     <string name="change_email">Изменить адрес электронной почты</string>
     <string name="user_score">Рейтинг: %s</string>
+    <string name="about_app_title">О приложении</string>
+    <string name="about_app_description">
+        <![CDATA[
+            <p>Каждый человек должен быть частью общественной и культурной жизни, поскольку без этого просто невозможно личностное и духовное развитие.</p>
+            <p>Наша цель - привлечь молодую аудиторию в музеи, театры и другие места городской культуры.</p>
+            <p>Приложение <strong>GoCulture</strong> призвано помочь показать друзьям, как вы близки к культуре.</p>
+            <h3>Разработчики:</h3>
+            <p style="padding-left: 40px;">Алексей Денисов<br />Константин Доронин<br />(Samsung IT Academy)</p>
+            <h3>Использованные модули:</h3>
+            <p style="padding-left: 40px;"><a href="https://github.com/osmdroid/osmdroid">OpenStreetMap - Tools for Android</a><br /><a href="https://firebase.google.com/">Google Firebase</a><br /><a href="https://github.com/google/gson">Gson</a><br /><a href="https://github.com/square/retrofit">Retrofit</a><br /><a href="https://github.com/coil-kt/coil">Coil</a><br /><a href="https://github.com/GetStream/avatarview-android">GetStream AvatarView</a><br /><a href="https://github.com/CanHub/Android-Image-Cropper">Android Image Cropper</a></p>
+        ]]>
+    </string>
 </resources>

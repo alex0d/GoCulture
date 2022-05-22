@@ -45,6 +45,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.j256.ormlite.stmt.query.In;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -55,6 +56,7 @@ import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
 import coil.transform.Transformation;
 import io.getstream.avatarview.AvatarView;
+import ru.mdev.goculture.InformationActivity;
 import ru.mdev.goculture.R;
 import ru.mdev.goculture.model.User;
 import ru.mdev.goculture.ui.login.LoginActivity;
@@ -118,7 +120,9 @@ public class ProfileFragment extends Fragment implements OptionCallback {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Log.d(TAG, "onMenuItemClick");
+                if (item.getItemId() == R.id.about_app) {
+                    startActivity(new Intent(context, InformationActivity.class));
+                }
                 return false;
             }
         });

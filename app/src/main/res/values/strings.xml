@@ -25,4 +25,16 @@
     <string name="confirm_email">Confirm email</string>
     <string name="change_password">Change password</string>
     <string name="user_score">Score: %s</string>
+    <string name="about_app_title">About</string>
+    <string name="about_app_description">
+        <![CDATA[
+            <p>Everyone should be a part of social and cultural life, because personal and spiritual development is simply impossible without it.</p>
+            <p>Our goal is to attract a young audience to museums, theaters and other places of urban culture.</p>
+            <p>The GoCulture app is designed to help show your friends how close you are to culture.</p>
+            <h3>Developers:</h3>
+            <p style="padding-left: 40px;">Alelsey Denisov<br />Konstantin Doronin<br />(Samsung IT Academy)</p>
+            <h3>Modules used in the application:</h3>
+            <p style="padding-left: 40px;"><a href="https://github.com/osmdroid/osmdroid">OpenStreetMap - Tools for Android</a><br /><a href="https://firebase.google.com/">Google Firebase</a><br /><a href="https://github.com/google/gson">Gson</a><br /><a href="https://github.com/square/retrofit">Retrofit</a><br /><a href="https://github.com/coil-kt/coil">Coil</a><br /><a href="https://github.com/GetStream/avatarview-android">GetStream AvatarView</a><br /><a href="https://github.com/CanHub/Android-Image-Cropper">Android Image Cropper</a></p>
+        ]]>
+    </string>
 </resources>
