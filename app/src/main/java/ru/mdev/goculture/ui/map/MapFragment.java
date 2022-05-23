@@ -144,6 +144,7 @@ public class MapFragment extends Fragment implements SightResponseCallback {
     @Override
     public void onResume() {
         super.onResume();
+        map.onResume();
 
         if (locationManager.getBestProvider(fineCriteria, true) == null) {
             gpsOff.setVisibility(View.VISIBLE);
