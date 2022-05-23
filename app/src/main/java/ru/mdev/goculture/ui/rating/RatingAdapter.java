@@ -54,8 +54,8 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.ViewRow> {
 
     @Override
     public int getItemCount() {
-        if(arrayList.size() > 20){
-            return 20;
+        if(arrayList.size() > 50){
+            return 50;
         }
         return arrayList.size();
     }
@@ -76,4 +76,3 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.ViewRow> {
         }
     }
 }
-

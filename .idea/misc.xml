@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/baseline_emoji_events_24.xml" value="0.1415" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/baseline_map_24.xml" value="0.1415" />
+        <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/baseline_museum_24.xml" value="0.259" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/baseline_photo_camera_24.xml" value="0.196" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/circle_button.xml" value="0.259" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.1415" />
@@ -35,6 +36,7 @@
         <entry key="..\:/Projects/GoCulture/app/src/main/res/layout/toolbar_layout.xml" value="0.19270833333333334" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3333333333333333" />
         <entry key="..\:/Projects/GoCulture/app/src/main/res/menu/profile_toolbar_menu.xml" value="0.12380952380952381" />
+        <entry key="..\:/Projects/GoCulture/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.259" />
       </map>
     </option>
   </component>

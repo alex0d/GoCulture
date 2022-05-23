@@ -1,6 +1,5 @@
 package ru.mdev.goculture.ui.rating;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,14 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,19 +44,30 @@ public class RatingFragment extends Fragment {
         ratingAdapter = new RatingAdapter(users);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        scoreDatabaseOrder = databaseReference.orderByChild("score").limitToLast(20);
+        scoreDatabaseOrder = databaseReference.orderByChild("score").limitToLast(50);
         scoreChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 User user = snapshot.getValue(User.class);
-                users.add(0, user);
-                ratingAdapter.notifyItemInserted(0);
+                int position = 0;
+                if (user.getScore() == 0) {
+                    position = users.size();
+                }
+                users.add(position, user);
+                ratingAdapter.notifyItemInserted(position);
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                // TODO: Add an update to the rating table when the data in the database changes
-                Log.d("DatabaseOrder", "onChildChanged: " + previousChildName);
+                User userChanged = snapshot.getValue(User.class);
+                for (int i = 0; i < users.size(); i++) {
+                    if (users.get(i).getUsername().equals(userChanged.getUsername())) {
+                        users.set(i, userChanged);
+                        Collections.sort(users, (o1, o2) -> o2.getScore() - o1.getScore());
+                        ratingAdapter.notifyDataSetChanged();
+                        break;
+                    }
+                }
             }
 
             @Override
