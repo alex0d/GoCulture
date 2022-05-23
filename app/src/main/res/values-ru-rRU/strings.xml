@@ -36,7 +36,7 @@
             <p style="padding-left: 40px;"><a href="https://github.com/osmdroid/osmdroid">OpenStreetMap - Tools for Android</a><br /><a href="https://firebase.google.com/">Google Firebase</a><br /><a href="https://github.com/google/gson">Gson</a><br /><a href="https://github.com/square/retrofit">Retrofit</a><br /><a href="https://github.com/coil-kt/coil">Coil</a><br /><a href="https://github.com/GetStream/avatarview-android">GetStream AvatarView</a><br /><a href="https://github.com/CanHub/Android-Image-Cropper">Android Image Cropper</a></p>
         ]]>
     </string>
-    <string name="gps_off">Разрешите доступ к геолокации.\nПока геолокация выключена вам не будут начисляться очки.</string>
-    <string name="dialog_title">Доступ к местоположению.</string>
-    <string name="dialog_text">Разрешите приложению Go culture доступ к данным о местоположении устройства?</string>
+    <string name="gps_off">Включите определение местоположения\nПока геолокация выключена, вам не будут начисляться очки</string>
+    <string name="location_permission_denied_dialog_title">Доступ к местоположению</string>
+    <string name="location_permission_denied_dialog_text">Разрешите приложению Go culture доступ к данным о местоположении устройства</string>
 </resources>

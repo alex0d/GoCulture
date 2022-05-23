@@ -4,31 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.Manifest;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Criteria;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.core.app.ActivityCompat;
 
 import org.osmdroid.LocationListenerProxy;
 import org.osmdroid.api.IMapController;
@@ -37,7 +26,6 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
@@ -92,18 +80,8 @@ public class MapFragment extends Fragment implements SightResponseCallback {
 
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setTitle(R.string.dialog_title)
-                .setMessage(R.string.dialog_text)
-                .setNegativeButton(android.R.string.no, (dialog, which) -> {
-
-                })
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                });
-
         gpsOff = view.findViewById(R.id.gps_off);
-        gpsOff.setOnClickListener(view1 -> builder.show());
+        gpsOff.setOnClickListener(view1 -> startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)));
 
         map = view.findViewById(R.id.map);
 
@@ -138,8 +116,25 @@ public class MapFragment extends Fragment implements SightResponseCallback {
 
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         locationOverlay = new MyLocationNewOverlay(map);
-        locationListener = new LocationListenerProxy(locationManager);
         map.getOverlays().add(locationOverlay);
+
+        locationListener = new LocationListenerProxy(locationManager) {
+            @Override
+            public void onProviderDisabled(String arg0) {
+                super.onProviderDisabled(arg0);
+                gpsOff.setVisibility(View.VISIBLE);
+                gpsOff.setEnabled(true);
+                locationOverlay.disableMyLocation();
+            }
+
+            @Override
+            public void onProviderEnabled(String arg0) {
+                super.onProviderEnabled(arg0);
+                gpsOff.setVisibility(View.GONE);
+                gpsOff.setEnabled(false);
+                locationOverlay.enableMyLocation();
+            }
+        };
 
         setupSightsMarkers();
 
@@ -149,11 +144,8 @@ public class MapFragment extends Fragment implements SightResponseCallback {
     @Override
     public void onResume() {
         super.onResume();
-//        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
-        if (locationManager.getBestProvider(fineCriteria, true) == null &&
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (locationManager.getBestProvider(fineCriteria, true) == null) {
             gpsOff.setVisibility(View.VISIBLE);
             gpsOff.setEnabled(true);
             return;
@@ -161,8 +153,8 @@ public class MapFragment extends Fragment implements SightResponseCallback {
         gpsOff.setVisibility(View.INVISIBLE);
         gpsOff.setEnabled(false);
 
-        locationOverlay.enableMyLocation();
         locationListener.startListening(new GeoUpdateHandler(this), 1000, 3);
+        locationOverlay.enableMyLocation();
     }
 
     @Override
@@ -173,7 +165,6 @@ public class MapFragment extends Fragment implements SightResponseCallback {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        //mViewModel = null;
     }
 
     @Override
@@ -188,10 +179,6 @@ public class MapFragment extends Fragment implements SightResponseCallback {
         editor.putFloat("mapZoom", (float)map.getZoomLevelDouble());
         editor.apply();
 
-        //this will refresh the osmdroid configuration on resuming.
-        //if you make changes to the configuration, use
-        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        //Configuration.getInstance().save(this, prefs);
         map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
     }
 

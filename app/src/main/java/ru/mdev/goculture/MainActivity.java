@@ -1,7 +1,8 @@
 package ru.mdev.goculture;
 
 import android.Manifest;
-import android.app.Service;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //    }
 
-    private void requestPermissionsIfNecessary(String[] permissions) {
+    public void requestPermissionsIfNecessary(String[] permissions) {
         ArrayList<String> permissionsToRequest = new ArrayList<>();
         for (String permission : permissions) {
             if (ContextCompat.checkSelfPermission(this, permission)
@@ -84,12 +85,35 @@ public class MainActivity extends AppCompatActivity {
                 permissionsToRequest.add(permission);
             }
         }
-        if (permissionsToRequest.size() > 0) {
-            ActivityCompat.requestPermissions(
-                    this,
-                    permissionsToRequest.toArray(new String[0]),
-                    REQUEST_PERMISSIONS_REQUEST_CODE);
+        if (!permissionsToRequest.isEmpty()) {
+            for (String permission : permissions) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                    showExplanation(getString(R.string.location_permission_denied_dialog_title), getString(R.string.gps_off), permission, REQUEST_PERMISSIONS_REQUEST_CODE);
+                } else {
+                    requestPermission(permission, REQUEST_PERMISSIONS_REQUEST_CODE);
+                }
+            }
         }
+    }
+
+    private void showExplanation(String title,
+                                 String message,
+                                 final String permission,
+                                 final int permissionRequestCode) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        requestPermission(permission, permissionRequestCode);
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void requestPermission(String permissionName, int permissionRequestCode) {
+        ActivityCompat.requestPermissions(this,
+                new String[]{permissionName}, permissionRequestCode);
     }
 
 }
