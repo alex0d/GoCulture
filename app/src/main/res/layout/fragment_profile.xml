@@ -29,6 +29,7 @@
         android:layout_marginTop="32dp"
         app:avatarViewBorderColor="@color/dodger_blue"
         app:avatarViewBorderWidth="3dp"
+        app:avatarViewIndicatorDrawable="@drawable/baseline_edit_24"
         app:avatarViewIndicatorBorderColor="@color/white"
         app:avatarViewIndicatorBorderSizeCriteria="10"
         app:avatarViewIndicatorColor="@color/md_green_100"
