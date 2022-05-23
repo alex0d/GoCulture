@@ -16,6 +16,11 @@ public class GeoUpdateHandler implements LocationListener
 
     private MapFragment mMapActivity;
 
+    public GeoUpdateHandler()
+    {
+
+    }
+
     public GeoUpdateHandler(MapFragment mapFragment)
     {
         this.mMapActivity = mapFragment;

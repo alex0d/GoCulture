@@ -30,6 +30,7 @@ import java.util.TimerTask;
 
 import ru.mdev.goculture.model.Sight;
 import ru.mdev.goculture.model.User;
+import ru.mdev.goculture.ui.map.GeoUpdateHandler;
 import ru.mdev.goculture.ui.map.SightResponseCallback;
 import ru.mdev.goculture.ui.map.SightsCollector;
 
@@ -73,26 +74,7 @@ public class LocationService extends Service {
         timer = new Timer();
         context = getApplicationContext();
 
-        listener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-            }
-        };
+        listener = new GeoUpdateHandler();
 
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
