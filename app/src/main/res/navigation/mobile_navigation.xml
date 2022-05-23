@@ -17,11 +17,11 @@
         android:label="@string/title_rating"
         tools:layout="@layout/fragment_rating" />
 
-    <fragment
-        android:id="@+id/navigation_friends"
-        android:name="ru.mdev.goculture.ui.friends.FriendsFragment"
-        android:label="@string/title_friends"
-        tools:layout="@layout/fragment_friends" />
+<!--    <fragment-->
+<!--        android:id="@+id/navigation_friends"-->
+<!--        android:name="ru.mdev.goculture.ui.friends.FriendsFragment"-->
+<!--        android:label="@string/title_friends"-->
+<!--        tools:layout="@layout/fragment_friends" />-->
 
     <fragment
         android:id="@+id/navigation_profile"

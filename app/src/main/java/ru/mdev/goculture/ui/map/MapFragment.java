@@ -5,21 +5,27 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -53,10 +59,8 @@ public class MapFragment extends Fragment implements SightResponseCallback {
     private ArrayList<Sight> sights;
 
     private float POINT_RADIUS = 50;
-    private final int PROX_ALERT_EXPIRATION = -1;
-    private final String PROX_ALERT_INTENT = "ru.mdev.goculture.ui.map";
-    private final double distance = 0.0003;
-    private final Intent intent = new Intent(PROX_ALERT_INTENT);
+
+    private TextView gpsOff;
 
     private SharedPreferences sharedPref;
 
@@ -87,6 +91,19 @@ public class MapFragment extends Fragment implements SightResponseCallback {
         context = inflater.getContext();
 
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(R.string.dialog_title)
+                .setMessage(R.string.dialog_text)
+                .setNegativeButton(android.R.string.no, (dialog, which) -> {
+
+                })
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                });
+
+        gpsOff = view.findViewById(R.id.gps_off);
+        gpsOff.setOnClickListener(view1 -> builder.show());
 
         map = view.findViewById(R.id.map);
 
@@ -142,21 +159,15 @@ public class MapFragment extends Fragment implements SightResponseCallback {
         if (locationManager.getBestProvider(fineCriteria, true) == null &&
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(context, "У вас геолокация выключена.\nВключите, пожалуйста -_-", Toast.LENGTH_LONG).show();
-            return; // FIXME: Сделать запрос на включение GPS. Иначе приложение сразу вылетает
+            gpsOff.setVisibility(View.VISIBLE);
+            gpsOff.setEnabled(true);
+            return;
         }
+        gpsOff.setVisibility(View.INVISIBLE);
+        gpsOff.setEnabled(false);
 
         locationOverlay.enableMyLocation();
         locationListener.startListening(new GeoUpdateHandler(this), 1000, 3);
-
-//        Log.d("Permission", locationManager.getAllProviders().toString());
-//        try {
-//            for (int i = 0; i < locationManager.getAllProviders().size(); i++) {
-//                Log.d("Permission", locationManager.getLastKnownLocation(locationManager.g).toString());
-//            }
-//        } catch (Exception e) {
-//            Log.d("Permission", e.getMessage());
-//        }
     }
 
     @Override

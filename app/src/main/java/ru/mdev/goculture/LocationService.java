@@ -1,27 +1,20 @@
 package ru.mdev.goculture;
 
 import android.Manifest;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,7 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.j256.ormlite.stmt.query.In;
 
 import java.util.List;
 import java.util.Timer;
@@ -38,14 +30,10 @@ import java.util.TimerTask;
 
 import ru.mdev.goculture.model.Sight;
 import ru.mdev.goculture.model.User;
-import ru.mdev.goculture.ui.map.MapFragment;
-import ru.mdev.goculture.ui.map.ProximityIntentReceiver;
 import ru.mdev.goculture.ui.map.SightResponseCallback;
 import ru.mdev.goculture.ui.map.SightsCollector;
 
 public class LocationService extends Service {
-
-    NotificationManager notificationManager;
 
     private DatabaseReference mDatabaseReference;
 
@@ -58,9 +46,6 @@ public class LocationService extends Service {
 
     final int SCORE_INCREASE_BY = 10;
     final float POINT_RADIUS = 50;
-    final int PROXY_ALERT_EXPIRATION = -1;
-    final String PROXY_ALERT_INTENT = "ru.mdev.goculture.ui.map";
-    final double distance = 0.003;
     private Context context;
 
     private Timer timer;
@@ -78,8 +63,6 @@ public class LocationService extends Service {
 
     @Override
     public void onCreate() {
-
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mDatabase.getReference("Users");
@@ -120,8 +103,6 @@ public class LocationService extends Service {
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 3, listener);
 
-//        IntentFilter filter = new IntentFilter(PROXY_ALERT_INTENT);
-//        context.registerReceiver(new ProximityIntentReceiver(), filter);
     }
 
     @Override
@@ -138,7 +119,6 @@ public class LocationService extends Service {
         if (locationManager != null) {
             locationManager.removeUpdates(listener);
         }
-        //context.unregisterReceiver(new ProximityIntentReceiver());
     }
 
     private void checkLocation() {
@@ -152,26 +132,6 @@ public class LocationService extends Service {
             return;
         }
 
-//        PendingIntent proximityIntent;
-//
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-//            proximityIntent = PendingIntent.getBroadcast(context,
-//                    0,
-//                    new Intent(PROXY_ALERT_INTENT),
-//                    PendingIntent.FLAG_IMMUTABLE);
-//            for (Sight sight : sights) {
-//                if ((Math.abs(Math.abs(sight.getPoint().getLat() - location.getLatitude())) < distance)
-//                        && (Math.abs(sight.getPoint().getLon() - location.getLongitude()) < distance)) {
-//                    locationManager.addProximityAlert(sight.getPoint().getLat(),
-//                            sight.getPoint().getLon(),
-//                            POINT_RADIUS,
-//                            PROXY_ALERT_EXPIRATION,
-//                            proximityIntent
-//                    );
-//                }
-//            }
-//        }
-//        else{
         for (Sight sight : sights) {
             if(getDistance(location.getLatitude(), sight.getPoint().getLat(), location.getLongitude(), sight.getPoint().getLon())
                     < POINT_RADIUS){
@@ -179,7 +139,6 @@ public class LocationService extends Service {
                 Log.i(TAG, "entering");
             }
         }
-        //}
     }
 
     private Location getBestLocation() {

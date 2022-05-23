@@ -11,10 +11,10 @@
         android:icon="@drawable/baseline_emoji_events_24"
         android:title="@string/title_rating" />
 
-    <item
-        android:id="@+id/navigation_friends"
-        android:icon="@drawable/baseline_group_24"
-        android:title="@string/title_friends" />
+<!--    <item-->
+<!--        android:id="@+id/navigation_friends"-->
+<!--        android:icon="@drawable/baseline_group_24"-->
+<!--        android:title="@string/title_friends" />-->
 
     <item
         android:id="@id/navigation_profile"
