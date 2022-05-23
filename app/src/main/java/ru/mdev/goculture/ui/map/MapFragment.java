@@ -117,11 +117,6 @@ public class MapFragment extends Fragment implements SightResponseCallback {
         map.setMaxZoomLevel(21.0);
         map.setScrollableAreaLimitLatitude(85, -85, 0);
 
-        // TODO: Разобраться с LocationOverlay.
-        MyLocationNewOverlay mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(context), map);
-        mLocationOverlay.enableMyLocation();
-        map.getOverlays().add(mLocationOverlay);
-
         mapController = map.getController();
 
         float oldZoom = sharedPref.getFloat("mapZoom", 0);
@@ -141,10 +136,10 @@ public class MapFragment extends Fragment implements SightResponseCallback {
         }
         mapController.setCenter(startPoint);
 
-        // TODO: Разобраться с LocationOverlay.
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         locationOverlay = new MyLocationNewOverlay(map);
         locationListener = new LocationListenerProxy(locationManager);
+        map.getOverlays().add(locationOverlay);
 
         setupSightsMarkers();
 
