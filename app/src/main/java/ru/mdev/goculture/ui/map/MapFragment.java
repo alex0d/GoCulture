@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.osmdroid.LocationListenerProxy;
 import org.osmdroid.api.IMapController;
@@ -187,7 +185,6 @@ public class MapFragment extends Fragment implements SightResponseCallback {
     @Override
     public void onStop() {
         super.onStop();
-//        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 
     private void setupSightsMarkers() {

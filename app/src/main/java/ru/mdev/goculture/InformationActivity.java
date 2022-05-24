@@ -2,14 +2,11 @@ package ru.mdev.goculture;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.text.HtmlCompat;
 
 import android.os.Bundle;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.view.View;
 import android.widget.TextView;
 
 public class InformationActivity extends AppCompatActivity {

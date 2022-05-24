@@ -8,19 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.j256.ormlite.stmt.query.In;
-
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
-import io.getstream.avatarview.AvatarView;
 import ru.mdev.goculture.R;
 import ru.mdev.goculture.ui.rating.OptionCallback;
-import ru.mdev.goculture.ui.rating.RatingAdapter;
-import ru.mdev.goculture.ui.rating.RatingFragment;
 
 public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewRow> {
 
@@ -85,4 +78,3 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewRow> {
         }
     }
 }
-

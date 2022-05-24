@@ -4,11 +4,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
-
-import org.osmdroid.util.GeoPoint;
-
-import java.util.Locale;
 
 public class GeoUpdateHandler implements LocationListener
 {
@@ -24,7 +19,6 @@ public class GeoUpdateHandler implements LocationListener
     public GeoUpdateHandler(MapFragment mapFragment)
     {
         this.mMapActivity = mapFragment;
-
     }
 
     @Override
@@ -37,24 +31,18 @@ public class GeoUpdateHandler implements LocationListener
     public void onProviderDisabled(String provider)
     {
         Log.i(TAG, "onProviderDisabled");
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void onProviderEnabled(String provider)
     {
         Log.i(TAG, "onProviderEnabled");
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras)
     {
         Log.i(TAG, "onStatusChanged");
-        // TODO Auto-generated method stub
-
     }
 
 }

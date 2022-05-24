@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -28,11 +27,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-//        try
-//        {
-//            this.getSupportActionBar().hide();
-//        }
-//        catch (NullPointerException e) {}
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
@@ -60,21 +54,6 @@ public class MainActivity extends AppCompatActivity {
         Intent locationIntent =new Intent(getApplicationContext(), LocationService.class);
         stopService(locationIntent);
     }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        ArrayList<String> permissionsToRequest = new ArrayList<>();
-//        for (String permission : permissions){
-//            permissionsToRequest.add(permission);
-//        }
-//        if (permissionsToRequest.size() > 0) {
-//            ActivityCompat.requestPermissions(
-//                    this,
-//                    permissionsToRequest.toArray(new String[0]),
-//                    REQUEST_PERMISSIONS_REQUEST_CODE);
-//        }
-//    }
 
     public void requestPermissionsIfNecessary(String[] permissions) {
         ArrayList<String> permissionsToRequest = new ArrayList<>();
@@ -115,5 +94,20 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,
                 new String[]{permissionName}, permissionRequestCode);
     }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        ArrayList<String> permissionsToRequest = new ArrayList<>();
+//        for (String permission : permissions){
+//            permissionsToRequest.add(permission);
+//        }
+//        if (permissionsToRequest.size() > 0) {
+//            ActivityCompat.requestPermissions(
+//                    this,
+//                    permissionsToRequest.toArray(new String[0]),
+//                    REQUEST_PERMISSIONS_REQUEST_CODE);
+//        }
+//    }
 
 }

@@ -22,7 +22,6 @@ import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 import ru.mdev.goculture.R;
 import ru.mdev.goculture.model.User;
