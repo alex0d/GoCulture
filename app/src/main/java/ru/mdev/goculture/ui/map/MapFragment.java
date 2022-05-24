@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -193,16 +194,21 @@ public class MapFragment extends Fragment implements SightResponseCallback {
         if (sights == null) {
             return;
         }
-        for (Sight sight : sights) {
-            Marker marker = new Marker(map);
-//            marker.setIcon(getResources().getDrawable(R.drawable.ic_location_pin));
-            marker.setTitle(sight.getName());
-            map.getOverlays().add(marker);
+        try {
+            for (Sight sight : sights) {
+                Marker marker = new Marker(map);
+                marker.setTitle(sight.getName());
+                map.getOverlays().add(marker);
 
-            GeoPoint point = new GeoPoint(sight.getPoint().getLat(), sight.getPoint().getLon());
-            marker.setPosition(point);
+                GeoPoint point = new GeoPoint(sight.getPoint().getLat(), sight.getPoint().getLon());
+                marker.setPosition(point);
+            }
+            map.invalidate();
         }
-        map.invalidate();
+        catch (NullPointerException ex) {
+            // MapView is detached or destroyed
+            Log.d("MapFragment", ex.getMessage());
+        }
     }
 
     @Override
