@@ -84,7 +84,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-                                                    Toast.makeText(getApplicationContext(), "Пароль изменён!", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
                                                     setResult(Activity.RESULT_OK);
                                                 } else {
                                                     Toast.makeText(getApplicationContext(), R.string.error_message, Toast.LENGTH_SHORT).show();
@@ -93,7 +93,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                             }
                                         });
                             } else {
-                                Toast.makeText(getApplicationContext(), "Старый пароль введен неверно!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.old_password_incorrect), Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                         }

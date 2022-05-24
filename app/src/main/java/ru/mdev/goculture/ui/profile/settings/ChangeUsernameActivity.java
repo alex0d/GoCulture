@@ -85,7 +85,7 @@ public class ChangeUsernameActivity extends AppCompatActivity {
                     .setValue(currentUser)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Имя пользователя успешно обновлено!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.username_updated), Toast.LENGTH_SHORT).show();
 
                             Intent data = new Intent();
                             data.putExtra("setting", "changeUsername");

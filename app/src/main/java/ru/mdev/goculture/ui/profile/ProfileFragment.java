@@ -207,7 +207,7 @@ public class ProfileFragment extends Fragment implements OptionCallback {
                         currentUser.setAvatarUrl(task.getResult().toString());
 
                         Log.d(TAG, "Download link received successfully");
-                        Toast.makeText(context, "Фото профиля обновлено!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, getResources().getString(R.string.avatar_updated), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -273,10 +273,10 @@ public class ProfileFragment extends Fragment implements OptionCallback {
     @Override
     public void confirmEmail() {
         if (mAuth.getCurrentUser().isEmailVerified()) {
-            Toast.makeText(context, "Почта уже подтверждена!", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, getResources().getString(R.string.email_already_confirmed), Toast.LENGTH_LONG).show();
         } else {
             mAuth.getCurrentUser().sendEmailVerification()
-                    .addOnCompleteListener(task -> Toast.makeText(context, "Письмо подтверждения выслано!", Toast.LENGTH_LONG).show());
+                    .addOnCompleteListener(task -> Toast.makeText(context, getResources().getString(R.string.confirmation_email_sent), Toast.LENGTH_LONG).show());
         }
     }
 

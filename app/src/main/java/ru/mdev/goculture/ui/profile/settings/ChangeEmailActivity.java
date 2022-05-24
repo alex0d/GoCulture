@@ -110,7 +110,7 @@ public class ChangeEmailActivity extends AppCompatActivity {
                                                 if (task.isSuccessful()) {
                                                     currentUser.setEmail(newEmail);
                                                     FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getCurrentUser().getUid()).setValue(currentUser);
-                                                    Toast.makeText(getApplicationContext(), "Почта успешно обновлена!", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.email_updated), Toast.LENGTH_SHORT).show();
 
                                                     Intent data = new Intent();
                                                     data.putExtra("setting", "changeEmail");
@@ -123,7 +123,7 @@ public class ChangeEmailActivity extends AppCompatActivity {
                                             }
                                         });
                             } else {
-                                Toast.makeText(getApplicationContext(), "Неправильный логин или пароль!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.password_incorrect), Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                         }

@@ -41,4 +41,12 @@
     <string name="location_permission_denied_dialog_text">Разрешите приложению GoСulture доступ к данным о местоположении устройства</string>
     <string name="username_too_long">Имя пользователя не должно быть длиннее 23 символов</string>
     <string name="no_internet">Отсутствует подключение к Интернету. Приложение не может работать корректно</string>
+    <string name="email_already_confirmed">Почта уже подтверждена</string>
+    <string name="password_changed">Пароль изменён</string>
+    <string name="old_password_incorrect">Старый пароль введен неверно</string>
+    <string name="avatar_updated">Фото профиля обновлено</string>
+    <string name="confirmation_email_sent">Письмо подтверждения выслано</string>
+    <string name="email_updated">Почта успешно обновлена</string>
+    <string name="username_updated">Имя пользователя успешно обновлено</string>
+    <string name="password_incorrect">Пароль введен неверно</string>
 </resources>
