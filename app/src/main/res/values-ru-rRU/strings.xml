@@ -49,4 +49,10 @@
     <string name="email_updated">Почта успешно обновлена</string>
     <string name="username_updated">Имя пользователя успешно обновлено</string>
     <string name="password_incorrect">Пароль введен неверно</string>
+    <string name="title_password_reset">Сброс пароля</string>
+    <string name="email_password_reset">На вашу почту выслано письмо для сброса пароля</string>
+    <string name="cancel">Отмена</string>
+    <string name="submit">Подтвердить</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="old_password">Старый пароль</string>
 </resources>

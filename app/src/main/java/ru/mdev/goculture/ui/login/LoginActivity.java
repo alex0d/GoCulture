@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         signInButton.setOnClickListener(v -> signInUser());
 
         forgotPasswordTextView = findViewById(R.id.forgot_password);
+        forgotPasswordTextView.setOnClickListener(v -> startActivity(new Intent(this, PasswordResetActivity.class)));
 
         registerTextView = findViewById(R.id.register);
         registerTextView.setOnClickListener(v -> {
