@@ -39,5 +39,6 @@
     </string>
     <string name="gps_off">Please turn on the GPS.\nWhile geolocation is turned off, you will not be awarded scores.</string>
     <string name="location_permission_denied_dialog_title">Location Access</string>
-    <string name="location_permission_denied_dialog_text">Allow the Go culture app to access device location data?</string>
+    <string name="location_permission_denied_dialog_text">Allow the GoСulture app to access device location data?</string>
+    <string name="username_too_long">The username must not be longer than 23 characters</string>
 </resources>

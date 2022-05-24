@@ -38,5 +38,6 @@
     </string>
     <string name="gps_off">Включите определение местоположения\nПока геолокация выключена, вам не будут начисляться очки</string>
     <string name="location_permission_denied_dialog_title">Доступ к местоположению</string>
-    <string name="location_permission_denied_dialog_text">Разрешите приложению Go culture доступ к данным о местоположении устройства</string>
+    <string name="location_permission_denied_dialog_text">Разрешите приложению GoСulture доступ к данным о местоположении устройства</string>
+    <string name="username_too_long">Имя пользователя не должно быть длиннее 23 символов</string>
 </resources>

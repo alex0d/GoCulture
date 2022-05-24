@@ -59,6 +59,11 @@ public class RegisterActivity extends AppCompatActivity {
             usernameEditText.requestFocus();
             return;
         }
+        if (username.length() > 23) {
+            usernameEditText.setError(getResources().getString(R.string.username_too_long));
+            usernameEditText.requestFocus();
+            return;
+        }
         if (email.isEmpty()) {
             emailEditText.setError(getResources().getString(R.string.email_empty));
             emailEditText.requestFocus();

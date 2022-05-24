@@ -79,6 +79,11 @@ public class ChangeUsernameActivity extends AppCompatActivity {
                 newUsernameEditText.requestFocus();
                 return;
             }
+            if (newUsername.length() > 23) {
+                newUsernameEditText.setError(getResources().getString(R.string.username_too_long));
+                newUsernameEditText.requestFocus();
+                return;
+            }
 
             currentUser.setUsername(newUsername);
             FirebaseDatabase.getInstance().getReference("Users")
