@@ -2,10 +2,14 @@ package ru.mdev.goculture;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -42,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         });
 
+        if (!isInternetAvailable()) {
+            Toast.makeText(this, getResources().getString(R.string.no_internet), Toast.LENGTH_LONG).show();
+        }
+
         new Thread(() -> {
             Intent locationIntent = new Intent(getApplicationContext(), LocationService.class);
             startService(locationIntent);
@@ -53,6 +61,24 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Intent locationIntent =new Intent(getApplicationContext(), LocationService.class);
         stopService(locationIntent);
+    }
+
+    public boolean isInternetAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
+                // WiFi connected
+                return true;
+
+            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+                // Mobile Internet connected
+                return true;
+            }
+        } else {
+            return false;
+        }
+        return false;
     }
 
     public void requestPermissionsIfNecessary(String[] permissions) {

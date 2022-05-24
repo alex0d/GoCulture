@@ -40,4 +40,5 @@
     <string name="location_permission_denied_dialog_title">Доступ к местоположению</string>
     <string name="location_permission_denied_dialog_text">Разрешите приложению GoСulture доступ к данным о местоположении устройства</string>
     <string name="username_too_long">Имя пользователя не должно быть длиннее 23 символов</string>
+    <string name="no_internet">Отсутствует подключение к Интернету. Приложение не может работать корректно</string>
 </resources>
