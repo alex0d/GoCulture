@@ -167,7 +167,7 @@ public class ProfileFragment extends Fragment implements OptionCallback {
         loadAvatarView(currentUser.getAvatarUrl());
         usernameTextView.setText(currentUser.getUsername());
         emailTextView.setText(currentUser.getEmail());
-        scoreTextView.setText(getString(R.string.user_score, String.valueOf(currentUser.getScore())));
+        scoreTextView.setText(getResources().getString(R.string.user_score, String.valueOf(currentUser.getScore())));
     }
 
     private void loadAvatarView(String data) {

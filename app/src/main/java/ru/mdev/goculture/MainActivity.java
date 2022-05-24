@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         if (!permissionsToRequest.isEmpty()) {
             for (String permission : permissions) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
-                    showExplanation(getString(R.string.location_permission_denied_dialog_title), getString(R.string.gps_off), permission, REQUEST_PERMISSIONS_REQUEST_CODE);
+                    showExplanation(getResources().getString(R.string.location_permission_denied_dialog_title), getString(R.string.gps_off), permission, REQUEST_PERMISSIONS_REQUEST_CODE);
                 } else {
                     requestPermission(permission, REQUEST_PERMISSIONS_REQUEST_CODE);
                 }
