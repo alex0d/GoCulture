@@ -55,4 +55,5 @@
     <string name="submit">Подтвердить</string>
     <string name="new_password">Новый пароль</string>
     <string name="old_password">Старый пароль</string>
+    <string name="title_registration">Регистрация нового пользователя</string>
 </resources>

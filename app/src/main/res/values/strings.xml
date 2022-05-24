@@ -56,4 +56,5 @@
     <string name="submit">Submit</string>
     <string name="new_password">New password</string>
     <string name="old_password">Old password</string>
+    <string name="title_registration">New user registration</string>
 </resources>
